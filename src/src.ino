@@ -225,6 +225,7 @@ void explode() {
 
   lcd.clear();
   lcd.print("Bomb explodes");
+  while(1);
 }
 
 void disarm() {
@@ -235,6 +236,7 @@ void disarm() {
   
   lcd.clear();
   lcd.print("Bomb Disarmed");
+   while(1);
 }
 
 
@@ -276,11 +278,9 @@ void loop() {
     for (int x = 0; x < 4; x++) {
       if ( pin[x] != defusePin[x] ) {
         explode();
-        while(1);
       }
     }
     disarm();
-    while(1);
   }
   
 }
