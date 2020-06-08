@@ -1,10 +1,31 @@
+/*
+ * Assembly
+ * 
+ * Keypad
+ * connect digital 6 to 13
+ * 
+ * Buzzers:
+ * buzzer is the passive buzzer, + connected to digital pin 3
+ * endbuzzer is the active buzzer, + connected to digital 2
+ * 
+ * LCD:
+ * SDA to analog 4
+ * SCL to analog 5
+ * 
+ * Leds:
+ * No resistors connected for maximum brightness
+ * greens to digital 4
+ * reds to digital 5
+ * 
+ * 
+ */
+
+
 #include <LiquidCrystal_PCF8574.h>
 #include <Wire.h>
 #include <Keypad.h>
 
 LiquidCrystal_PCF8574 lcd(0x27); // set the LCD address to 0x27 for a 16 chars and 2 line display
-// sda -> analouge 4 (a4)
-// scl -> analouge 5 (a5)
 
 const byte ROWS = 4;
 const byte COLS = 4;
@@ -60,7 +81,7 @@ void setup()
 
   pinMode(red, OUTPUT);
   pinMode(green, OUTPUT);
-  analogWrite(green, 255);
+  analogWrite(green, 250);
   Serial.begin(115200);
   // LCD setup
   Wire.begin();
@@ -230,7 +251,7 @@ void explode() {
 
 void disarm() {
   analogWrite(red, 0);
-  analogWrite(green, 255);
+  analogWrite(green, 250);
   analogWrite(buzzer, 0);
   analogWrite(endbuzzer, 0);
   
