@@ -26,6 +26,9 @@ Keypad kpd = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 #define buzzer 3
 #define endbuzzer 2
 
+#define red 5
+#define green 4
+
 // always the current timer
 int minutes = 10;
 int seconds = 1;
@@ -54,7 +57,10 @@ void setup()
 
   pinMode(buzzer, OUTPUT);
   pinMode(endbuzzer, OUTPUT);
-  
+
+  pinMode(red, OUTPUT);
+  pinMode(green, OUTPUT);
+  analogWrite(green, 255);
   Serial.begin(115200);
   // LCD setup
   Wire.begin();
@@ -150,9 +156,10 @@ void setBombCode() {
   codeLength = atoi(input2);
 
 
-
+  randomSeed(analogRead(0));
   char temp[1];
   for (int i = 0; i < codeLength; i++) {
+    
     itoa(random(9), temp, 10);
     code[i] = temp[0];
   }
@@ -172,6 +179,8 @@ void setBombCode() {
 void setPin() {
   
   char tempx[4];
+  
+  randomSeed(analogRead(0));
   
   for (int i = 0; i < 4; i++) {
   
@@ -212,12 +221,15 @@ void writeTime() {
 void explode() {
   analogWrite(buzzer, 250);
   analogWrite(endbuzzer, 255);
+  analogWrite(red, 255);
 
   lcd.clear();
   lcd.print("Bomb explodes");
 }
 
 void disarm() {
+  analogWrite(red, 0);
+  analogWrite(green, 255);
   analogWrite(buzzer, 0);
   analogWrite(endbuzzer, 0);
   
@@ -227,14 +239,17 @@ void disarm() {
 
 
 void loop() {
+  analogWrite(green, 0);
   time = millis();
   unsigned long currentDifference = time / interval;
 
   if (currentDifference != difference) {
     if ( (currentDifference % 2) == 0) {
       analogWrite(buzzer, 255);
+      analogWrite(red, 255);
     } else {
       analogWrite(buzzer, 0);
+      analogWrite(red, 0);
     }
     
     difference = currentDifference;
